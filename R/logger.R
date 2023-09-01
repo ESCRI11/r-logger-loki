@@ -64,6 +64,11 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
     httr::add_headers("Content-Type" = "application/json")
   )
 
-  # Return the response for debugging or further processing
-  return(httr::content(response))
+  # Check response
+  if (response$status_code == 204) {
+    return(TRUE)
+  } else {
+    warning(paste0("Failed to send log to Loki: ", content(response, "text")))
+    return(FALSE)
+  }
 }
