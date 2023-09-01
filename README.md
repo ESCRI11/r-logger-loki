@@ -46,5 +46,5 @@ set_loki_endpoint("http://your-loki-instance:3100")
 
 ## License
 
-MIT License. See [LICENSE.md](LICENSE.md) for more details.
+MIT License. See [LICENSE](LICENSE) for more details.
 
