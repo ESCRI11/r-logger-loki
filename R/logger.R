@@ -16,7 +16,7 @@
 #' log_to_loki("This is a test log", list(app = "MyApp", level = "INFO"), "http://your-loki-instance:3100/loki/api/v1/push")
 #' log_to_loki("This is an error", list(app = "MyApp", level = "ERROR"), "http://your-loki-instance:3100/loki/api/v1/push", trace = traceback(2, as.character = TRUE))
 #' }
-log_to_loki <- function(log_message, log_labels, loki_endpoint = NULL, trace = NULL) {
+log_to_loki <- function(log_message, log_labels, loki_endpoint = NULL, trace = NULL, async = TRUE) {
   # Validate arguments
   if (!is.character(log_message) || length(log_message) != 1) {
     stop("log_message should be a single character string")
@@ -28,7 +28,7 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint = NULL, trace = N
 
   # Fetch the package environment
   pkg_env <- getFromNamespace("pkg_env", "rLoggerLoki")
-  
+
   # If no explicit endpoint provided, try to fetch from package environment
   if (is.null(loki_endpoint)) {
     if (exists("loki_endpoint", envir = pkg_env)) {
@@ -76,7 +76,7 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint = NULL, trace = N
   if (response$status_code == 204) {
     return(TRUE)
   } else {
-    warning(paste0("Failed to send log to Loki: ", content(response, "text")))
+    warning(paste0("Failed to send log to Loki: ", httr::content(response, "text")))
     return(FALSE)
   }
 }
