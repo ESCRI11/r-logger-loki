@@ -16,7 +16,7 @@
 #' log_to_loki("This is a test log", list(app = "MyApp", level = "INFO"), "http://your-loki-instance:3100/loki/api/v1/push")
 #' log_to_loki("This is an error", list(app = "MyApp", level = "ERROR"), "http://your-loki-instance:3100/loki/api/v1/push", trace = traceback(2, as.character = TRUE))
 #' }
-log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
+log_to_loki <- function(log_message, log_labels, loki_endpoint = NULL, trace = NULL) {
   # Validate arguments
   if (!is.character(log_message) || length(log_message) != 1) {
     stop("log_message should be a single character string")
@@ -26,8 +26,16 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
     stop("log_labels should be a list")
   }
 
-  if (!is.character(loki_endpoint) || length(loki_endpoint) != 1) {
-    stop("loki_endpoint should be a single character string")
+  # Fetch the package environment
+  pkg_env <- getFromNamespace("pkg_env", "rLoggerLoki")
+  
+  # If no explicit endpoint provided, try to fetch from package environment
+  if (is.null(loki_endpoint)) {
+    if (exists("loki_endpoint", envir = pkg_env)) {
+      loki_endpoint <- get("loki_endpoint", envir = pkg_env)
+    } else {
+      stop("No Loki endpoint provided and none is set in the package environment.")
+    }
   }
 
   if (!is.null(trace) && !is.character(trace)) {

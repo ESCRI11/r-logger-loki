@@ -4,7 +4,7 @@
 \alias{log_to_loki}
 \title{Log Messages to Loki with Custom Labels}
 \usage{
-log_to_loki(log_message, log_labels, loki_endpoint, trace = NULL)
+log_to_loki(log_message, log_labels, loki_endpoint = NULL, trace = NULL)
 }
 \arguments{
 \item{log_message}{Character string specifying the log message.}
