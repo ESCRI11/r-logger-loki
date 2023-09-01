@@ -20,13 +20,14 @@ log_to_loki(
 \item{loki_endpoint}{Character string specifying the URL of the Loki instance to send logs to.}
 
 \item{trace}{Optional, character vector containing the traceback information. Default is NULL.}
+
+\item{async}{Logical indicating whether to send the log asynchronously. Default is TRUE.}
 }
 \value{
-A list containing the HTTP response information from Loki.
+A list containing the HTTP response information from Loki, or a future promise if async is TRUE.
 }
 \description{
 This function allows you to send log messages from R to a Loki instance with custom labels.
-The function constructs the payload and sends it to the specified Loki endpoint.
 }
 \examples{
 \dontrun{
