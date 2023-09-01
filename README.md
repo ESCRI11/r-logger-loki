@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/ESCRI11/r-logger-loki/graph/badge.svg?token=URX7QJAV6J)](https://codecov.io/gh/ESCRI11/r-logger-loki)
+
 # rLoggerLoki
 
 ## Overview
