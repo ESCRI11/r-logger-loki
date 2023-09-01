@@ -1,10 +1,10 @@
 Package: rLoggerLoki
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Logging Interface for Loki from R
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Xavier", "Escribà-Montagut", , "xavier.escriba.montagut@gmail.com", role = c("aut", "cre"))
+Description: An R package for sending logs from R to Loki. This package allows for easy integration
+    of centralized logging for R applications, with support for custom labels and traceback information.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
