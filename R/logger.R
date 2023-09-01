@@ -21,11 +21,11 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
   if (!is.character(log_message) || length(log_message) != 1) {
     stop("log_message should be a single character string")
   }
-  
+
   if (!is.list(log_labels)) {
     stop("log_labels should be a list")
   }
-  
+
   if (!is.character(loki_endpoint) || length(loki_endpoint) != 1) {
     stop("loki_endpoint should be a single character string")
   }
@@ -39,20 +39,23 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
     trace_str <- paste(trace, collapse = "; ")
     log_message <- paste(log_message, "\nTraceback: ", trace_str)
   }
-  
+
   # Construct the payload for Loki
   payload <- list(
     streams = list(
       list(
         stream = log_labels,
-        values = list(list(as.character(Sys.time() * 1e9), log_message))
+        values = list(list(
+            as.character(as.numeric(Sys.time()) * 1e9),
+            log_message
+        ))
       )
     )
   )
-  
+
   # Convert payload to JSON
   json_payload <- jsonlite::toJSON(payload, auto_unbox = TRUE)
-  
+
   # Send the log to Loki
   response <- httr::POST(
     loki_endpoint,
@@ -60,7 +63,7 @@ log_to_loki <- function(log_message, log_labels, loki_endpoint, trace = NULL) {
     encode = "json",
     httr::add_headers("Content-Type" = "application/json")
   )
-  
+
   # Return the response for debugging or further processing
   return(httr::content(response))
 }
